@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
- * @Des 启动类
- * @Author guyu
- * @Date 2020/7/9 23:50
- * @Param 
- * @Return 
+ * 启动类
+ *
+ * @author zhouxiaowen
+ * @date 2021-04-18 22:13
+ * @version 1.0
  */
 @SpringBootApplication
 @EnableScheduling  //开启定时任务的注解
