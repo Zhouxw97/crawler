@@ -1,4 +1,4 @@
-package cn.guyu.utils;
+package com.wantwant.utils;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;

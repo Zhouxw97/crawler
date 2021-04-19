@@ -1,7 +1,7 @@
-package cn.guyu.service;
+package com.wantwant.service;
 
-import cn.guyu.dao.ItemDao;
-import cn.guyu.pojo.Item;
+import com.wantwant.dao.ItemDao;
+import com.wantwant.pojo.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;

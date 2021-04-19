@@ -1,6 +1,6 @@
-package cn.guyu.dao;
+package com.wantwant.dao;
 
-import cn.guyu.pojo.Item;
+import com.wantwant.pojo.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemDao extends JpaRepository<Item,Long> {

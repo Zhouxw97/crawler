@@ -1,4 +1,4 @@
-package cn.guyu.pojo;
+package com.wantwant.pojo;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,11 +8,11 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @Des 商品类目表
- * @Author guyu
- * @Date 2020/7/9 21:47
- * @Param
- * @Return
+ * 商品类目表
+ *
+ * @author zhouxiaowen
+ * @date 2021-04-19 11:36
+ * @version 1.0
  */
 @Entity
 @Table(name = "item")

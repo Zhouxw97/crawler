@@ -1,4 +1,4 @@
-package cn.guyu;
+package com.wantwant;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

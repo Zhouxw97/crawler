@@ -1,6 +1,6 @@
-package cn.guyu.service;
+package com.wantwant.service;
 
-import cn.guyu.pojo.Item;
+import com.wantwant.pojo.Item;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface ItemService {
      * 根据条件查询物品
      *
      * @param item
-     * @return: java.util.List<cn.guyu.pojo.Item>
+     * @return: java.util.List<Item>
      * @author: zhouxiaowen
      * @date: 2021-04-19 10:21
      */
