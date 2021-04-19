@@ -24,10 +24,27 @@ public class Item {
     private Long spu;
     private String title;
     private Double price;
+    private String store;
+    private String promotions;
     private String pic;
     private String url;
     private Date created;
-    private Date updated;
+
+    public String getStore() {
+        return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
+    }
+
+    public String getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(String promotions) {
+        this.promotions = promotions;
+    }
 
     public Long getId() {
         return id;
@@ -93,11 +110,4 @@ public class Item {
         this.created = created;
     }
 
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
 }
