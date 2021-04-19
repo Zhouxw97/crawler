@@ -1,4 +1,4 @@
-package cn.guyu;
+package com.wantwant;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;

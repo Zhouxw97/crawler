@@ -1,6 +1,6 @@
-package cn.guyu.task;
+package com.wantwant.task;
 
-import cn.guyu.SpringBootTest;
+import com.wantwant.SpringBootTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

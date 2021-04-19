@@ -1,12 +1,13 @@
-package cn.guyu.enums;
+package com.wantwant.enums;
 import java.util.Map;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
+
 /**
- * @Des 状态枚举
- * @Author guyu
- * @Date 2020/7/10 15:58
- * @Param
- * @Return
+ * 状态枚举
+ *
+ * @author zhouxiaowen
+ * @date 2021-04-19 11:36
+ * @version 1.0
  */
 public enum  StatusEnum {
     NOT_EXIST(-1L,"商品spu为空");
