@@ -41,13 +41,17 @@ public class HttpUtils {
      * @param url
      * @return 页面数据
      */
-    public String doGetHtml(String url) {
+    public String doGetHtml(String url,Boolean isIPhone) {
         //创建httpclient对象
         CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm).build();
         //创建httpget对象，设置url地址
         HttpGet httpGet = new HttpGet(url);
         //模拟环境,*****摸拟浏览器浏览
-        httpGet.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0");
+        if (isIPhone){
+            httpGet.setHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1");
+        }else {
+            httpGet.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0");
+        }
         //设置请求信息
         httpGet.setConfig(getConfig());
 
@@ -144,9 +148,9 @@ public class HttpUtils {
      */
     private RequestConfig getConfig() {
         RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(1000)    //创建连接的最长时间
-                .setConnectionRequestTimeout(500)   //获取连接的最长时间
-                .setSocketTimeout(600* 1000)      //数据传输最长时间
+                .setConnectTimeout(100 * 1000)    //创建连接的最长时间
+                .setConnectionRequestTimeout(100 * 1000)   //获取连接的最长时间
+                .setSocketTimeout(600 * 1000)      //数据传输最长时间
                 .build();
         return config;
     }
