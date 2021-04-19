@@ -30,7 +30,8 @@ public class ItemTask {
     @Autowired
     private ItemService itemService;
     //用于解析json
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    @Autowired
+    private ObjectMapper MAPPER ;
 
     //当下载任务完成后，间隔多长时间进行下次任务。
     //@Scheduled(fixedDelay = 100 * 1000)
