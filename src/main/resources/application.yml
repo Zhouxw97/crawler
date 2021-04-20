@@ -30,12 +30,12 @@ spring:
       test-on-return: false
       # 配置监控统计拦截的 Filter，去掉后监控界面 SQL 无法统计，wall 用于防火墙
       filters: stat,wall,config
-        filter:
-          stat:
-            enabled: true
-            log-slow-sql: true
-            slow-sql-millis: 1000
-            merge-sql: true
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
       # 配置 DruidStatFilter
       web-stat-filter:
         enabled: true
@@ -49,3 +49,35 @@ spring:
         # 登录用户名/密码
         login-username: root
         login-password: 123456
+
+##-------mybatis plus 配置----------------start----------------------
+mybatis-plus:
+  # 如果是放在resource目录 classpath:/mapper/*Mapper.xml
+  mapper-locations: classpath:/mybatis/mapper/**/*.xml
+  global-config:
+    db-config:
+      db-type: mysql
+      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+      id-type: ASSIGN_ID
+      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+      #      field-strategy: ignored
+      insert-strategy: ignored
+      update-strategy: ignored
+      select-strategy: ignored
+      #驼峰下划线转换
+      db-column-underline: true
+      #刷新mapper 调试神器
+      refresh-mapper: true
+      #逻辑删除配置（下面3个配置）
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  #    sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+  configuration:
+    #配置返回数据库(column下划线命名&&返回java实体是驼峰命名)，自动匹配无需as（没开启这个，SQL需要写as： select user_id as userId）
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+##-------mybatis plus 配置----------------end----------------------
