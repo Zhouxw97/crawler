@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="defPath" value="logs/"/>
+	<property name="defPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %5p [%C:%L] - %m%n"/>
+	<property name="defPerSize" value="100MB"/>
+	<property name="defTotalSize" value="1GB"/>
+	<property name="defKeepDays" value="15"/>
+
+	<springProperty scope="context" name="appName" source="spring.application.name" defaultValue="crawler"/>
+	<!-- 文件输出格式 -->
+	<property name="PATTERN" value="%-12(%d{yyyy-MM-dd HH:mm:ss.SSS}) [${appName}] [%tid] [%level] [%thread] %c#%L | %msg%n" />
+	<!-- 控制台打印 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<Pattern>${PATTERN}</Pattern>
+		</encoder>
+	</appender>
+
+	<!--  记录系统核心运行环节的日志，包括错误信息 -->
+	<appender name="dmsLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${defPath}/logs.log</file>
+		<!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${defPath}/%d{yyyy-MM-dd}/logs.log.%i.gz</fileNamePattern>
+			<maxFileSize>${defPerSize}</maxFileSize>
+			<maxHistory>${defKeepDays}</maxHistory>
+			<totalSizeCap>${defTotalSize}</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${defPattern}</pattern>
+		</encoder>
+	</appender>
+
+
+	<root level="INFO">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="dmsLog"/>
+	</root>
+
+</configuration>
