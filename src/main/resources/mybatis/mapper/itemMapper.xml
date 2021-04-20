@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wantwant.dao.ItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wantwant.entity.po.ItemPo">
+    <id column="id" property="id"/>
+        <result column="spu" property="spu"/>
+        <result column="sku" property="sku"/>
+        <result column="title" property="title"/>
+        <result column="price" property="price"/>
+        <result column="store" property="store"/>
+        <result column="promotions" property="promotions"/>
+        <result column="pic" property="pic"/>
+        <result column="url" property="url"/>
+        <result column="created" property="created"/>
+  </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, spu, sku, title, price, store, promotions, pic, url, created
+    </sql>
+
+
+</mapper>
