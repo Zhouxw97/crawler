@@ -1,11 +1,11 @@
 package com.wantwant.task;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wantwant.enums.StatusEnum;
 import com.wantwant.pojo.Item;
 import com.wantwant.service.ItemService;
 import com.wantwant.utils.HttpUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,9 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,7 +42,8 @@ public class ItemTask {
         //1.声明地址
         String url = "https://search.jd.com/Search?keyword=%E6%97%BA%E6%97%BA&enc=utf-8&qrst=1&rt=1&stop=1&vt=2&suggest=1.def.0.V18--12s0%2C20s0%2C38s0%2C97s0&wq=shouji&s=122&click=0&page=";
         //2.遍历页面
-        for (int i = 1; i < 10; i = i + 2) {
+        for (int i = 19; i < 30; i = i + 2) {
+            System.out.println("页数 = " + i);
             String html = httpUtils.doGetHtml(url + i,false );
             //解析页面，获取商品数据并存储
             parse(html);
