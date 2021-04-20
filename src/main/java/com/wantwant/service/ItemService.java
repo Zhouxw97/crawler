@@ -1,28 +1,16 @@
 package com.wantwant.service;
 
-import com.wantwant.pojo.Item;
 
-import java.util.List;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.wantwant.entity.po.ItemPo;
 
-public interface ItemService {
+/**
+ * Service
+ *
+ * @author zhouxiaowen
+ * @date 2021-04-20 10:53
+ * @version 1.0
+ */
+public interface ItemService extends IService<ItemPo> {
 
-    /**
-     * 保存商品
-     *
-     * @param item
-     * @return: void
-     * @author: zhouxiaowen
-     * @date: 2021-04-19 10:21
-     */
-    public void save(Item item);
-
-    /**
-     * 根据条件查询物品
-     *
-     * @param item
-     * @return: java.util.List<Item>
-     * @author: zhouxiaowen
-     * @date: 2021-04-19 10:21
-     */
-    public List<Item> findAll(Item item);
 }
