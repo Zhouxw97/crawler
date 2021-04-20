@@ -56,13 +56,10 @@ public class HttpUtils {
         }
         //设置请求信息
         httpGet.setConfig(getConfig());
-
         CloseableHttpResponse response = null;
-
         try {
             //使用httpclient发起请求，获取响应
             response = httpClient.execute(httpGet);
-
             //解析响应返回结果
             if (response.getStatusLine().getStatusCode() == 200) {
                 //判断响应实体是不是空的
