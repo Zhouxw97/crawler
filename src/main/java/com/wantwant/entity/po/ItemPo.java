@@ -49,7 +49,7 @@ public class ItemPo extends Model<ItemPo> {
 	* 商品价格
 	*/
 	@TableField("price")
-	private Long price;
+	private Double price;
 
 	/**
 	* 店铺
@@ -117,11 +117,11 @@ public class ItemPo extends Model<ItemPo> {
 		this.title = title;
 	}
 
-	public Long getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Long price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
