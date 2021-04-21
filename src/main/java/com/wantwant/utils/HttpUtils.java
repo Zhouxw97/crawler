@@ -17,14 +17,16 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 /**
- * @Des httpclient封装工具类
- * @Author guyu
- * @Date 2020/7/10 7:23
- * @Param
- * @Return
+ * httpclient封装工具类
+ *
+ * @author zhouxiaowen
+ * @date 2021-04-21 00:08
+ * @version 1.0
  */
 @Component
 public class HttpUtils {
+
+    //连接池管理器
     private PoolingHttpClientConnectionManager cm;
 
     public HttpUtils() {
@@ -39,7 +41,10 @@ public class HttpUtils {
      * 根据请求地址下载页面数据
      *
      * @param url
-     * @return 页面数据
+     * @param isIPhone
+     * @return: java.lang.String
+     * @author: zhouxiaowen
+     * @date: 2021-04-21 00:10
      */
     public String doGetHtml(String url,Boolean isIPhone) {
         //创建httpclient对象
