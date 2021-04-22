@@ -10,6 +10,10 @@ import com.wantwant.utils.HttpUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Consts;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,7 +21,9 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -151,19 +157,46 @@ public class ItemTask {
      * @date: 2021-04-20 19:11
      */
     public void getItemDetails(){
-        String itemUrl= "https://item.jd.com/1152038.html";
+        String itemUrl= "https://item.jd.com/39447237507.html";
         //标题
         String itemInfo = httpUtils.doGetHtml(itemUrl,false);
         String title = Jsoup.parse(itemInfo).select("div.sku-name").text();
-        log.info("title:{}",title);
-        /*String itemInfo = httpUtils.doGetHtml(itemUrl,true);
-        String title = Jsoup.parse(itemInfo).select("div#itemName").text();
-        log.info("title:{}",title);*/
-
         //促销活动
         Elements script = Jsoup.parse(itemInfo).getElementsByTag("script");
         String scriptStr = script.toString();
         StringBuilder stringBuilder = new StringBuilder();
+
+        //优惠劵
+        String cats = "";
+        String patterCat = "(cat:)(.*?)(])";
+        Pattern patternCat = Pattern.compile(patterCat);
+        Matcher matcherCat = patternCat.matcher(scriptStr);
+        if (matcherCat.find()){
+            cats = matcherCat.group().trim();
+            cats = cats.substring(6, cats.length() - 1);
+        }
+        String venderId = "";
+        String patterVenderId = "(venderId:)(.*?)(,)";
+        Pattern patternVenderId = Pattern.compile(patterVenderId);
+        Matcher matcherVenderId = patternVenderId.matcher(scriptStr);
+        if (matcherVenderId.find()){
+            venderId = matcherVenderId.group().trim();
+            venderId = venderId.substring(9, cats.length() - 1);
+        }
+
+        List<BasicNameValuePair> paramList = new ArrayList<>();
+        paramList.add(new BasicNameValuePair("skuId","39447237507"));
+        paramList.add(new BasicNameValuePair("cat",cats));
+        paramList.add(new BasicNameValuePair("venderId",venderId));
+        try {
+            String params = EntityUtils.toString(new UrlEncodedFormEntity(paramList, Consts.UTF_8));
+            String coupons = httpUtils.doGetHtml("https://cd.jd.com/coupon/service" + "?" + params, false);
+            System.out.println("coupons = " + coupons);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         //获取19促销内容
         String patternStr19 = "\"19\":(.*?)(\",)";
