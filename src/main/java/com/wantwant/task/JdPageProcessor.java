@@ -57,11 +57,14 @@ public class JdPageProcessor implements PageProcessor {
     //抓取网站的相关配置
     private Site site = Site.me()
             .setRetryTimes(3)//下载失败重试次数
-            .setSleepTime(1000)//请求之间间隔时间
+            .setSleepTime(2 * 1000)//请求之间间隔时间
             .setTimeOut(10 * 1000)//超时时间
             .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36");
 
-
+    @Override
+    public Site getSite() {
+        return site;
+    }
 
     /**
      * 爬虫核心逻辑，编写抽取逻辑
@@ -155,15 +158,11 @@ public class JdPageProcessor implements PageProcessor {
 
     }
 
-    @Override
-    public Site getSite() {
-        return site;
-    }
-
-    //@Scheduled(initialDelay = 1,fixedDelay = 10 * 1000)
+    //@Scheduled(initialDelay = 1000,fixedDelay = 10 * 1000)
     public void doProcess(){
         for (int i = 1; i <= 2; i++) {
             int pageNum = i * 2 - 1;
+            log.info("page:{}",pageNum);
             Spider.create(new JdPageProcessor())
                     .setDownloader(new HttpClientDownloader())
                     .addUrl(url+pageNum)
@@ -171,18 +170,6 @@ public class JdPageProcessor implements PageProcessor {
                     .addPipeline(new MybatisPipeline())
                     .run();
         }
-    }
-
-    public static void main(String[] args) {
-        /*for (int i = 1; i <= 2; i++) {
-            int pageNum = i * 2-1;
-            System.out.println("pageNum = " + pageNum);
-            Spider.create(new JdPageProcessor()).setDownloader(new HttpClientDownloader())
-                    .addUrl(url).thread(1).run();
-        }*/
-        String s = "venderId:41252,";
-        s = s.substring(9, s.length() - 1);
-        System.out.println(s);
     }
 
 }
