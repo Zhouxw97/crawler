@@ -1,4 +1,4 @@
-package com.wantwant.entity.dto;
+package com.wantwant.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @date 2021-04-22 19:49
  * @version 1.0
  */
-public class JdItemDto implements Serializable {
+public class JdItemVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	/**
@@ -88,10 +88,6 @@ public class JdItemDto implements Serializable {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	@ApiModelProperty(value = "创建时间")
 	private LocalDateTime created;
-
-	public JdItemDto() {
-		super();
-	}
 
 	public Long getId() {
 		return id;
