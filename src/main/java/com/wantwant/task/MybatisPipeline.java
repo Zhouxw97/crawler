@@ -5,6 +5,7 @@ import com.wantwant.entity.vo.JdItemVo;
 import com.wantwant.service.JdItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.ResultItems;
@@ -25,7 +26,7 @@ public class MybatisPipeline implements Pipeline {
     public void process(ResultItems resultItems, Task task) {
         JdItemPo jdItemPo = resultItems.get("jdItemPo");
         log.info("jdItemPo:{}",jdItemPo);
-        if (Objects.nonNull(jdItemPo)) {
+        if (Objects.nonNull(jdItemPo) && !StringUtils.isEmpty(jdItemPo.getSku())) {
             List<JdItemVo> itemBySku = jdItemService.getItemBySku(jdItemPo.getSku());
             if (CollectionUtils.isEmpty(itemBySku)){
                 jdItemService.saveJdItem(jdItemPo);
