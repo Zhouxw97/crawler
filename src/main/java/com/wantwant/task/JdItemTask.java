@@ -59,13 +59,13 @@ public class JdItemTask {
     //@Scheduled(fixedDelay = 100 * 1000)
     @SneakyThrows
     public void doJdItemTask(int pages) {
-        for (int i = 1; i <= pages; i = i + 2) {
-            int pageNum = 1 * 2 - 1;
+        for (int i = 1; i <= pages; i++) {
+            int pageNum = i * 2 - 1;
             log.info("pageNum:{}",pageNum);
             String html = httpUtils.doGetHtml(url + pageNum,false);
             //解析页面，获取商品数据并存储
             parseHtml(html);
-            Thread.sleep(200l);
+            Thread.sleep(1000);
         }
     }
 
@@ -95,7 +95,7 @@ public class JdItemTask {
                 jdItemPo.setTitle(element.select("div.p-name > a > em").text());
                 jdItemPo.setStore(element.select("div.p-shop > span > a").text());
                 jdItemPo.setPic("https:"+element.select("img").attr("data-lazy-img"));
-
+                Thread.sleep(200);
                 String priceStr = httpUtils.doGetHtml(priceUrl + skuStr, false);
                 Map<String,String> priceMap = JSON.parseObject(JSON.parseArray(priceStr).get(0).toString(),Map.class);
                 jdItemPo.setCurrentPrice(priceMap.get("p"));
@@ -104,6 +104,7 @@ public class JdItemTask {
                 //详情
                 String itemUrlReplace = itemUrl.replace("?", skuStr);
                 jdItemPo.setUrl(itemUrlReplace);
+                Thread.sleep(200);
                 String itemStr = httpUtils.doGetHtml(itemUrlReplace, true);
                 Document itemDocument = Jsoup.parse(itemStr);
                 String scriptStr = itemDocument.getElementsByTag("script").toString();
