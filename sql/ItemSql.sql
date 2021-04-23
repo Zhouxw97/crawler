@@ -25,6 +25,6 @@ CREATE TABLE `jd_item` (
   `coupon` varchar(255) DEFAULT NULL COMMENT '优惠劵',
   `pic` varchar(200) DEFAULT NULL COMMENT '商品图片',
   `url` varchar(200) DEFAULT NULL COMMENT '商品详情地址',
-  `created` datetime DEFAULT NULL COMMENT '创建时间',
+  `created` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1385412079699988483 DEFAULT CHARSET=utf8 COMMENT='京东商品品类信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='京东商品品类信息';
