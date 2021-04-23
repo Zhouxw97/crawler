@@ -89,7 +89,7 @@ public class JdItemTask {
             if (skuStr != "") {
                 //根据sku查询数据库这个商品,有的话跳过
                 List<JdItemVo> itemBySku = jdItemService.getItemBySku(skuStr);
-                if (CollectionUtils.isEmpty(itemBySku)){
+                if (!CollectionUtils.isEmpty(itemBySku)){
                     continue;
                 }
                 jdItemPo.setTitle(element.select("div.p-name > a > em").text());
