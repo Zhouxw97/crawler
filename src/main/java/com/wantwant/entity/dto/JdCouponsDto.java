@@ -1,6 +1,7 @@
 package com.wantwant.entity.dto;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -173,7 +174,14 @@ public class JdCouponsDto implements Serializable {
 
     @Override
     public String toString() {
-        return discountdesc.toString() +" " + name + " 有效期:"+timeDesc;
+        String info = "";
+        if (StringUtils.isNotEmpty(quota)) {
+            String coupons = "满" + quota + "减" + discount+":";
+            info = coupons + discountdesc.toString() + " " + name + " 有效期:" + timeDesc;
+        }else {
+            info = discountdesc.toString() + " " + name + " 有效期:" + timeDesc;
+        }
+        return info;
     }
 
     public static void main(String[] args) {
