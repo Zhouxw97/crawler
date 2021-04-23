@@ -12,6 +12,7 @@ import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,16 +21,26 @@ import java.util.Objects;
 public class MybatisPipeline implements Pipeline {
 
     @Autowired
-    private JdItemService jdItemService;
+    protected JdItemService jdItemService;
+
+    private static MybatisPipeline mybatisPipeline;
+
+    @PostConstruct
+    public void init(){
+        mybatisPipeline = this;
+        mybatisPipeline.jdItemService = this.jdItemService;
+    }
 
     @Override
     public void process(ResultItems resultItems, Task task) {
         JdItemPo jdItemPo = resultItems.get("jdItemPo");
         log.info("jdItemPo:{}",jdItemPo);
         if (Objects.nonNull(jdItemPo) && !StringUtils.isEmpty(jdItemPo.getSku())) {
-            List<JdItemVo> itemBySku = jdItemService.getItemBySku(jdItemPo.getSku());
+            System.out.println("jdItemPo.getSku() = " + jdItemPo.getSku());
+
+            List<JdItemVo> itemBySku = mybatisPipeline.jdItemService.getItemBySku(jdItemPo.getSku());
             if (CollectionUtils.isEmpty(itemBySku)){
-                jdItemService.saveJdItem(jdItemPo);
+                mybatisPipeline.jdItemService.saveJdItem(jdItemPo);
             }
         }
 

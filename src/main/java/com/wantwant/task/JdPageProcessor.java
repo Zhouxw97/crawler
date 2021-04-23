@@ -57,7 +57,7 @@ public class JdPageProcessor implements PageProcessor {
     //抓取网站的相关配置
     private Site site = Site.me()
             .setRetryTimes(3)//下载失败重试次数
-            .setSleepTime(2 * 1000)//请求之间间隔时间
+            .setSleepTime(1 * 100)//请求之间间隔时间
             .setTimeOut(10 * 1000)//超时时间
             .setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36");
 
@@ -160,16 +160,14 @@ public class JdPageProcessor implements PageProcessor {
 
     //@Scheduled(initialDelay = 1000,fixedDelay = 10 * 1000)
     public void doProcess(){
-        for (int i = 1; i <= 2; i++) {
-            int pageNum = i * 2 - 1;
-            log.info("page:{}",pageNum);
-            Spider.create(new JdPageProcessor())
-                    .setDownloader(new HttpClientDownloader())
-                    .addUrl(url+pageNum)
-                    .thread(10)
-                    .addPipeline(new MybatisPipeline())
-                    .run();
-        }
+        int pageNum = 1 * 2 - 1;
+        log.info("page:{}",pageNum);
+        Spider.create(new JdPageProcessor())
+                .setDownloader(new HttpClientDownloader())
+                .addUrl(url+pageNum)
+                .thread(10)
+                .addPipeline(new MybatisPipeline())
+                .run();
     }
 
 }

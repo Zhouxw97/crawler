@@ -9,9 +9,9 @@ import com.wantwant.service.JdItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +27,8 @@ public class JdItemServiceImpl extends ServiceImpl<JdItemMapper, JdItemPo> imple
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Resource
-	JdItemMapper jdItemMapper;
+	@Autowired
+	private JdItemMapper jdItemMapper;
 
 	/**
 	 * 根据sku获取商品品类
