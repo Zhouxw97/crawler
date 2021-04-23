@@ -1,6 +1,8 @@
 package com.wantwant.task;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.wantwant.entity.dto.JdCouponsDto;
 import com.wantwant.entity.po.JdItemPo;
 import com.wantwant.entity.vo.JdItemVo;
 import com.wantwant.service.JdItemService;
@@ -9,10 +11,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Consts;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -48,7 +45,7 @@ public class JdItemTask {
     private static String patternStr19 = "\"19\":(.*?)(\",)";
     private static String patternStr60 = "\"60\":(.*?)(\",)";
     private static String patterCat = "(cat:)(.*?)(])";
-    private static String patterVenderId = "(venderId:)(.*?)(,)";
+    private static String patterVenderId = "(venderID:)(.*?)(,)";
     private static String patterAvlCoupon = "(\"avlCoupon\":)(.*?)(},\\n)";
 
     //入口
@@ -97,7 +94,6 @@ public class JdItemTask {
                 jdItemPo.setTitle(element.select("div.p-name > a > em").text());
                 jdItemPo.setStore(element.select("div.p-shop > span > a").text());
                 jdItemPo.setPic("https:"+element.select("img").attr("data-lazy-img"));
-                Thread.sleep(200);
                 String priceStr = httpUtils.doGetHtml(priceUrl + skuStr, false);
                 Map<String,String> priceMap = JSON.parseObject(JSON.parseArray(priceStr).get(0).toString(),Map.class);
                 jdItemPo.setCurrentPrice(priceMap.get("p"));
@@ -134,28 +130,19 @@ public class JdItemTask {
                 }
                 jdItemPo.setPromotions(stringBuilder.toString());
 
-                String cats = "";
-                Pattern patternCat = Pattern.compile(patterCat);
-                Matcher matcherCat = patternCat.matcher(scriptStr);
-                if (matcherCat.find()){
-                    cats = matcherCat.group().trim();
-                    cats = cats.substring(6, cats.length() - 1);
+                String coupons = "";
+                Pattern p = Pattern.compile(patterAvlCoupon);
+                Matcher m = p.matcher(itemStr);
+                if (m.find()){
+                    coupons = m.group().trim();
+                    coupons = coupons.substring(12, coupons.length() - 1);
+                    JSONObject jsonObject = JSONObject.parseObject(coupons);
+                    List<JdCouponsDto> couponsList = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
+                    if (CollectionUtils.isNotEmpty(couponsList)){
+                        log.info("coupons:{}",couponsList.toString());
+                        jdItemPo.setCoupon(StringUtils.join(couponsList.toArray(),"\n"));
+                    }
                 }
-                String venderId = "";
-                Pattern patternVenderId = Pattern.compile(patterVenderId);
-                Matcher matcherVenderId = patternVenderId.matcher(scriptStr);
-                if (matcherVenderId.find()){
-                    venderId = matcherVenderId.group().trim();
-                    venderId = venderId.substring(9, cats.length() - 1);
-                }
-                List<BasicNameValuePair> paramList = new ArrayList<>();
-                paramList.add(new BasicNameValuePair("skuId",skuStr));
-                paramList.add(new BasicNameValuePair("cat",cats));
-                paramList.add(new BasicNameValuePair("venderId",venderId));
-                String params = EntityUtils.toString(new UrlEncodedFormEntity(paramList, Consts.UTF_8));
-                String coupons = httpUtils.doGetHtml(couponUrl + "?" + params, true);
-                //todo:解析优惠劵
-                jdItemPo.setCoupon(coupons);
                 jdItemPo.setCreated(LocalDateTime.now());
                 jdItemService.saveJdItem(jdItemPo);
             }
@@ -163,8 +150,9 @@ public class JdItemTask {
     }
 
 
+    @SneakyThrows
     public void getDetail(){
-        String url = "https://item.jd.com/5255424.html";
+        String url = "https://item.jd.com/6338667.html";
         String itemStr = httpUtils.doGetHtml(url, true);
         /*Document itemDocument = Jsoup.parse(itemStr);
         String scriptStr = itemDocument.getElementsByTag("script").toString();*/
@@ -175,6 +163,10 @@ public class JdItemTask {
         if (m.find()){
             coupons = m.group().trim();
             coupons = coupons.substring(12, coupons.length() - 1);
+            log.info("coupons:{}",coupons);
+            JSONObject jsonObject = JSONObject.parseObject(coupons);
+            List<JdCouponsDto> couponsList = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
+            log.info("couponsList:{}",StringUtils.join(couponsList.toArray(),"\n"));
         }
 
 

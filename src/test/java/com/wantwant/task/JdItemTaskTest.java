@@ -16,4 +16,9 @@ public class JdItemTaskTest extends SpringBootTest {
         jdItemTask.doJdItemTask(10);
     }
 
+    @Test
+    public void doGetDetail() {
+        jdItemTask.getDetail();
+    }
+
 }
