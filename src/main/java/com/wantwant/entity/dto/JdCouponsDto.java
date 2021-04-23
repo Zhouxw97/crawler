@@ -3,7 +3,6 @@ package com.wantwant.entity.dto;
 import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -244,7 +243,6 @@ public class JdCouponsDto implements Serializable {
                 "}";
 
         JSONObject jsonObject = JSONObject.parseObject(jsonStr);
-        List<JdCouponsDto> list = new ArrayList();
         List<JdCouponsDto> coupons = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
         System.out.println(coupons);
     }

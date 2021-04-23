@@ -1,5 +1,7 @@
 package com.wantwant.entity.dto;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,11 @@ public class JdDiscountdescDto implements Serializable {
 
     @Override
     public String toString() {
-        Map<String, Object> map = info.get(0);
-        return "满"+map.get("quota")+"享"+map.get("discount")+"折扣";
+        if (CollectionUtils.isNotEmpty(info)) {
+            Map<String, Object> map = info.get(0);
+            return "满"+map.get("quota")+"享"+map.get("discount")+"折扣";
+        }else {
+            return "";
+        }
     }
 }
