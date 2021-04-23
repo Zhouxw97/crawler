@@ -13,7 +13,7 @@ public class JdItemTaskTest extends SpringBootTest {
 
     @Test
     public void JditemTaskTest() {
-        jdItemTask.doJdItemTask(2);
+        jdItemTask.doJdItemTask(10);
     }
 
 }
