@@ -58,8 +58,8 @@ public class JdItemTask {
     //当下载任务完成后，间隔多长时间进行下次任务。
     //@Scheduled(fixedDelay = 100 * 1000)
     @SneakyThrows
-    public void doJdItemTask() {
-        for (int i = 1; i < 2; i = i + 2) {
+    public void doJdItemTask(int pages) {
+        for (int i = 1; i <= pages; i = i + 2) {
             int pageNum = 1 * 2 - 1;
             log.info("pageNum:{}",pageNum);
             String html = httpUtils.doGetHtml(url + pageNum,false);
