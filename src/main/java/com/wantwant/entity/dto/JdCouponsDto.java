@@ -26,8 +26,10 @@ public class JdCouponsDto implements Serializable {
 
     private String couponType;
 
+    //满quota减discount
     private String quota;
 
+    //满quota减discount
     private String discount;
 
     private String couponstyle;
