@@ -100,7 +100,7 @@ public class JdItemTask {
                 //详情
                 String itemUrlReplace = itemUrl.replace("?", skuStr);
                 jdItemPo.setUrl(itemUrlReplace);
-                Thread.sleep(200);
+                Thread.sleep(500);
                 String itemStr = httpUtils.doGetHtml(itemUrlReplace, true);
                 Document itemDocument = Jsoup.parse(itemStr);
                 String scriptStr = itemDocument.getElementsByTag("script").toString();
