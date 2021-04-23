@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.util.Formatter;
 import java.util.List;
 
 /**
@@ -255,5 +256,7 @@ public class JdCouponsDto implements Serializable {
         JSONObject jsonObject = JSONObject.parseObject(jsonStr);
         List<JdCouponsDto> coupons = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
         System.out.println(coupons);
+
+        System.out.println(new Formatter().format("%.4f",(double) System.currentTimeMillis() / 1000));
     }
 }

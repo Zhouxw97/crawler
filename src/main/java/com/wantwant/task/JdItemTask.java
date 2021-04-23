@@ -47,7 +47,7 @@ public class JdItemTask {
     private static String patterAvlCoupon = "(\"avlCoupon\":)(.*?)(},\\n)";
 
     //入口
-    private static final String url = "https://search.jd.com/Search?keyword=%E6%97%BA%E6%97%BA&enc=utf-8&suggest=1.his.0.0&wq=&pvid=594f60ed400f48d693a3eb9f3d98e617&page=";
+    private static final String url = "https://search.jd.com/Search?keyword=%E6%97%BA%E6%97%BA&enc=utf-8&suggest=1.his.0.0&wq=&pvid=594f60ed400f48d693a3eb9f3d98e617&scrolling=y&page=";
     private static final String priceUrl = "http://p.3.cn/prices/mgets?skuIds=J_";
     private static final String itemUrl= "https://item.jd.com/?.html";
     private static final String couponUrl = "https://cd.jd.com/coupon/service";
@@ -58,8 +58,8 @@ public class JdItemTask {
     public void doJdItemTask(int pages) {
         for (int i = 1; i <= pages; i++) {
             int pageNum = i * 2 - 1;
-            log.info("pageNum:{}",pageNum);
-            String html = httpUtils.doGetHtml(url + pageNum,false);
+            log.info("pageNum:{}",i);
+            String html = httpUtils.doGetHtml(url + i,false);
             //解析页面，获取商品数据并存储
             parseHtml(html);
             Thread.sleep(1000);
