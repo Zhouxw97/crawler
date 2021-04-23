@@ -44,8 +44,6 @@ public class JdItemTask {
     //正则表达式
     private static String patternStr19 = "\"19\":(.*?)(\",)";
     private static String patternStr60 = "\"60\":(.*?)(\",)";
-    private static String patterCat = "(cat:)(.*?)(])";
-    private static String patterVenderId = "(venderID:)(.*?)(,)";
     private static String patterAvlCoupon = "(\"avlCoupon\":)(.*?)(},\\n)";
 
     //入口
@@ -84,6 +82,8 @@ public class JdItemTask {
             JdItemPo jdItemPo = new JdItemPo();
             jdItemPo.setSpu(element.attr("data-spu"));
             String skuStr = element.attr("data-sku");
+            String coupon = element.select("div.p-icons > i[data-tips=本商品可领用优惠券]").text();
+            jdItemPo.setCoupon(coupon);
             jdItemPo.setSku(skuStr);
             if (skuStr != "") {
                 //根据sku查询数据库这个商品,有的话跳过
@@ -130,17 +130,18 @@ public class JdItemTask {
                 }
                 jdItemPo.setPromotions(stringBuilder.toString());
 
-                String coupons = "";
-                Pattern p = Pattern.compile(patterAvlCoupon);
-                Matcher m = p.matcher(itemStr);
-                if (m.find()){
-                    coupons = m.group().trim();
-                    coupons = coupons.substring(12, coupons.length() - 1);
-                    JSONObject jsonObject = JSONObject.parseObject(coupons);
-                    List<JdCouponsDto> couponsList = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
-                    if (CollectionUtils.isNotEmpty(couponsList)){
-                        log.info("coupons:{}",couponsList.toString());
-                        jdItemPo.setCoupon(StringUtils.join(couponsList.toArray(),"\n"));
+                if (StringUtils.isEmpty(coupon)) {
+                    Pattern p = Pattern.compile(patterAvlCoupon);
+                    Matcher m = p.matcher(itemStr);
+                    if (m.find()){
+                        String coupons = m.group().trim();
+                        coupons = coupons.substring(12, coupons.length() - 1);
+                        JSONObject jsonObject = JSONObject.parseObject(coupons);
+                        List<JdCouponsDto> couponsList = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
+                        if (CollectionUtils.isNotEmpty(couponsList)){
+                            log.info("coupons:{}",couponsList.toString());
+                            jdItemPo.setCoupon(StringUtils.join(couponsList.toArray(),"\n"));
+                        }
                     }
                 }
                 jdItemPo.setCreated(LocalDateTime.now());
@@ -154,8 +155,6 @@ public class JdItemTask {
     public void getDetail(){
         String url = "https://item.jd.com/6338667.html";
         String itemStr = httpUtils.doGetHtml(url, true);
-        /*Document itemDocument = Jsoup.parse(itemStr);
-        String scriptStr = itemDocument.getElementsByTag("script").toString();*/
 
         String coupons = "";
         Pattern p = Pattern.compile(patterAvlCoupon);
