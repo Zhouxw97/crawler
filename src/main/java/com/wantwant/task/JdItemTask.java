@@ -20,6 +20,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ public class JdItemTask {
     private static String patternStr60 = "\"60\":(.*?)(\",)";
     private static String patterCat = "(cat:)(.*?)(])";
     private static String patterVenderId = "(venderId:)(.*?)(,)";
+    private static String patterAvlCoupon = "(\"avlCoupon\":)(.*?)(},\\n)";
 
     //入口
     private static final String url = "https://search.jd.com/Search?keyword=%E6%97%BA%E6%97%BA&qrst=1&wq=%E6%97%BA%E6%97%BA&stock=1&ev=exbrand_%E6%97%BA%E6%97%BA%5E&click=0&page=";
@@ -154,9 +156,28 @@ public class JdItemTask {
                 String coupons = httpUtils.doGetHtml(couponUrl + "?" + params, true);
                 //todo:解析优惠劵
                 jdItemPo.setCoupon(coupons);
+                jdItemPo.setCreated(LocalDateTime.now());
                 jdItemService.saveJdItem(jdItemPo);
             }
         }
+    }
+
+
+    public void getDetail(){
+        String url = "https://item.jd.com/5255424.html";
+        String itemStr = httpUtils.doGetHtml(url, true);
+        /*Document itemDocument = Jsoup.parse(itemStr);
+        String scriptStr = itemDocument.getElementsByTag("script").toString();*/
+
+        String coupons = "";
+        Pattern p = Pattern.compile(patterAvlCoupon);
+        Matcher m = p.matcher(itemStr);
+        if (m.find()){
+            coupons = m.group().trim();
+            coupons = coupons.substring(12, coupons.length() - 1);
+        }
+
+
     }
 
 }
