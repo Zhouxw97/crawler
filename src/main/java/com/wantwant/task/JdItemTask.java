@@ -82,8 +82,6 @@ public class JdItemTask {
             JdItemPo jdItemPo = new JdItemPo();
             jdItemPo.setSpu(element.attr("data-spu"));
             String skuStr = element.attr("data-sku");
-            String coupon = element.select("div.p-icons > i[data-tips=本商品可领用优惠券]").text();
-            jdItemPo.setCoupon(coupon);
             jdItemPo.setSku(skuStr);
             if (skuStr != "") {
                 //根据sku查询数据库这个商品,有的话跳过
@@ -130,19 +128,20 @@ public class JdItemTask {
                 }
                 jdItemPo.setPromotions(stringBuilder.toString());
 
-                if (StringUtils.isEmpty(coupon)) {
-                    Pattern p = Pattern.compile(patterAvlCoupon);
-                    Matcher m = p.matcher(itemStr);
-                    if (m.find()){
-                        String coupons = m.group().trim();
-                        coupons = coupons.substring(12, coupons.length() - 1);
-                        JSONObject jsonObject = JSONObject.parseObject(coupons);
-                        List<JdCouponsDto> couponsList = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
-                        if (CollectionUtils.isNotEmpty(couponsList)){
-                            log.info("coupons:{}",couponsList.toString());
-                            jdItemPo.setCoupon(StringUtils.join(couponsList.toArray(),"\n"));
-                        }
+                Pattern p = Pattern.compile(patterAvlCoupon);
+                Matcher m = p.matcher(itemStr);
+                if (m.find()){
+                    String coupons = m.group().trim();
+                    coupons = coupons.substring(12, coupons.length() - 1);
+                    JSONObject jsonObject = JSONObject.parseObject(coupons);
+                    List<JdCouponsDto> couponsList = JSONObject.parseArray(jsonObject.get("coupons").toString(), JdCouponsDto.class);
+                    if (CollectionUtils.isNotEmpty(couponsList)){
+                        log.info("coupons:{}",couponsList.toString());
+                        jdItemPo.setCoupon(StringUtils.join(couponsList.toArray(),"\n"));
                     }
+                }
+                if (StringUtils.isEmpty(jdItemPo.getCoupon())) {
+                    jdItemPo.setCoupon(element.select("div.p-icons > i[data-tips=本商品可领用优惠券]").text());
                 }
                 jdItemPo.setCreated(LocalDateTime.now());
                 jdItemService.saveJdItem(jdItemPo);
