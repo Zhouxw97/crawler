@@ -127,6 +127,9 @@ public class JdItemTask {
                     }
                 }
                 jdItemPo.setPromotions(stringBuilder.toString());
+                if (StringUtils.isEmpty(jdItemPo.getPromotions())){
+                    jdItemPo.setCoupon(element.select("div.p-icons > i[data-tips=本商品参与满件促销]").text());
+                }
 
                 Pattern p = Pattern.compile(patterAvlCoupon);
                 Matcher m = p.matcher(itemStr);
