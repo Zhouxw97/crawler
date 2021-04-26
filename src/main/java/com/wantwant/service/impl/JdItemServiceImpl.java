@@ -1,8 +1,11 @@
 package com.wantwant.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wantwant.dao.JdItemMapper;
+import com.wantwant.entity.dto.JdItemQueryDto;
 import com.wantwant.entity.po.JdItemPo;
 import com.wantwant.entity.vo.JdItemVo;
 import com.wantwant.service.JdItemService;
@@ -62,4 +65,19 @@ public class JdItemServiceImpl extends ServiceImpl<JdItemMapper, JdItemPo> imple
 		return jdItemMapper.insert(jdItemPo);
 	}
 
+	/**
+	 * 分页查询数据
+	 *
+	 * @param jdItemQueryDto
+	 * @param page
+	 * @return: com.baomidou.mybatisplus.core.metadata.IPage<com.wantwant.entity.vo.JdItemVo>
+	 * @author: zhouxiaowen
+	 * @date: 2021-04-26 14:18
+	 */
+	@Override
+	public IPage<JdItemVo> getJdItemByPage(Page<JdItemVo> page, JdItemQueryDto jdItemQueryDto) {
+		List<JdItemVo> jdItemVos = jdItemMapper.selectPageBySql(page, jdItemQueryDto);
+		page.setRecords(jdItemVos);
+		return page;
+	}
 }

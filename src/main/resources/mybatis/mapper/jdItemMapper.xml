@@ -23,4 +23,22 @@
        id, spu, sku, title, current_price, guide_price, store, promotions, coupon, pic, url, created
     </sql>
 
+    <select id="selectPageBySql" resultType="com.wantwant.entity.vo.JdItemVo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM jd_item t
+        <where>
+            <if test=" params.id !=null and params.id != '' ">AND t.id = #{params.id}</if>
+            <if test=" params.spu !=null and params.spu != '' ">AND t.spu = #{params.spu}</if>
+            <if test=" params.sku !=null and params.sku != '' ">AND t.sku = #{params.sku}</if>
+            <if test=" params.title !=null and params.title != '' ">AND t.title = #{params.title}</if>
+            <if test=" params.currentPrice !=null and params.currentPrice != '' ">AND t.current_price = #{params.currentPrice}</if>
+            <if test=" params.guidePrice !=null and params.guidePrice != '' ">AND t.guide_price = #{params.guidePrice}</if>
+            <if test=" params.store !=null and params.store != '' ">AND t.store = #{params.store}</if>
+            <if test=" params.promotions !=null and params.promotions != '' ">AND t.promotions = #{params.promotions}</if>
+            <if test=" params.coupon !=null and params.coupon != '' ">AND t.coupon = #{params.coupon}</if>
+            <if test=" params.created !=null and params.created != '' ">AND t.created = #{params.created}</if>
+        </where>
+    </select>
+
 </mapper>
