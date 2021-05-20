@@ -4,6 +4,7 @@
 package com.wantwant.interceptor;
 
 import com.wantwant.config.ExceptionControllerAdviceHandel;
+import com.wantwant.exception.AuthException;
 import com.wantwant.exception.ServiceBizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -95,5 +96,19 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public void handleMaxUploadSizeException(MaxUploadSizeExceededException ex, HttpServletResponse response) {
         exceptionControllerAdviceHandel.getDefaultExceptionResponse(null, null, ex);
+    }
+
+    /**
+     * 处理AuthException
+     *
+     * @param error
+     * @return
+     * @author zhangxc
+     * @date 2016年10月25日
+     */
+    @ExceptionHandler(AuthException.class)
+    @ResponseBody
+    public ResponseEntity signatureExceptionAdvice(HttpServletRequest req, AuthException error) {
+        return exceptionControllerAdviceHandel.getDefaultExceptionResponse(req, null, error);
     }
 }

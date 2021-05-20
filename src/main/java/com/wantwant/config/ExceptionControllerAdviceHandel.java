@@ -4,6 +4,7 @@
 package com.wantwant.config;
 
 import com.wantwant.entity.dto.framework.RestResultResponse;
+import com.wantwant.exception.AuthException;
 import com.wantwant.exception.ServiceBizException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +74,9 @@ public class ExceptionControllerAdviceHandel {
         if (error instanceof BindException) {
             return bindException((BindException) error);
         }
-        //处理MaxUploadSizeExceededException
+        if (error instanceof AuthException) {
+            return authException((AuthException) error);
+        }
         return throwableAdvice((Throwable) error);
     }
 
@@ -157,6 +160,20 @@ public class ExceptionControllerAdviceHandel {
         });
         String errorMsg = sb.toString();
         return new ResponseEntity<>(new RestResultResponse(HttpStatus.BAD_REQUEST.value(), errorMsg), HttpStatus.OK);
+    }
+
+    /**
+     * 处理AuthException
+     *
+     * @param e
+     * @return: org.springframework.http.ResponseEntity
+     * @author: zhouxiaowen
+     * @date: 2021-05-20 17:01
+     */
+    private ResponseEntity authException(AuthException e) {
+        logger.error("签名异常：{}", e.getMessage());
+        String errorMsg = e.getMessage();
+        return new ResponseEntity<>(new RestResultResponse(HttpStatus.UNAUTHORIZED.value(), errorMsg), HttpStatus.OK);
     }
 
     /**
