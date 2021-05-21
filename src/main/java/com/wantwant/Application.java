@@ -1,7 +1,10 @@
 package com.wantwant;
 
+import com.wantwant.config.Filter.HttpServletRequestFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -22,5 +25,16 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class,args);
+    }
+
+    @Bean
+    public FilterRegistrationBean httpServletRequestFilter(){
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(new HttpServletRequestFilter());
+        registration.addUrlPatterns("/*");
+        registration.addInitParameter("paramName", "paramValue");
+        registration.setName("httpServletRequestReplacedFilter");
+        registration.setOrder(1);
+        return registration;
     }
 }
