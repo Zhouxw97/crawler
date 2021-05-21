@@ -14,15 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ValidationException;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author zhangxc
@@ -70,12 +69,12 @@ public class ExceptionControllerAdviceHandel {
         if (error instanceof MethodArgumentNotValidException) {
             return methodArgumentExceptionAdvice((MethodArgumentNotValidException) error);
         }
-        //处理BindException
-        if (error instanceof BindException) {
-            return bindException((BindException) error);
-        }
         if (error instanceof AuthException) {
             return authException((AuthException) error);
+        }
+        //处理validationException
+        if (error instanceof ValidationException) {
+            return validationException((ValidationException) error);
         }
         return throwableAdvice((Throwable) error);
     }
@@ -144,21 +143,16 @@ public class ExceptionControllerAdviceHandel {
     }
 
     /**
-     * 处理BindException
+     * 处理validationException
      *
      * @param e
      * @return org.springframework.http.ResponseEntity
      * @author renwd
      * @since 2019/3/19
      */
-    private ResponseEntity bindException(BindException e) {
+    private ResponseEntity validationException(ValidationException e) {
         logger.error("数据格式不正确：{}", e.getMessage());
-        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        StringBuilder sb = new StringBuilder();
-        fieldErrors.stream().forEach(exception -> {
-            appendExceptionInfo(sb, exception);
-        });
-        String errorMsg = sb.toString();
+        String errorMsg = e.getMessage();
         return new ResponseEntity<>(new RestResultResponse(HttpStatus.BAD_REQUEST.value(), errorMsg), HttpStatus.OK);
     }
 
