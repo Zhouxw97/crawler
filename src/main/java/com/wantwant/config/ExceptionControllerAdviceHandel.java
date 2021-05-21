@@ -3,9 +3,9 @@
  */
 package com.wantwant.config;
 
+import com.wantwant.config.exception.AuthException;
+import com.wantwant.config.exception.ServiceBizException;
 import com.wantwant.entity.dto.framework.RestResultResponse;
-import com.wantwant.exception.AuthException;
-import com.wantwant.exception.ServiceBizException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
