@@ -1,4 +1,4 @@
-package com.wantwant.interceptor;
+package com.wantwant.config.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.wantwant.config.ResponseDtoConfig;
