@@ -1,18 +1,17 @@
 package com.wantwant.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.wantwant.exception.AuthException;
-import com.wantwant.utils.BodyReaderHttpServletRequestWrapper;
+import com.wantwant.config.exception.AuthException;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -35,6 +34,9 @@ public class SignatureValidationAspect {
 
     private Logger log = LoggerFactory.getLogger(SignatureValidationAspect.class);
 
+    @Autowired
+    private HttpServletRequest request;
+
     /**
      * 切点
      *
@@ -54,15 +56,17 @@ public class SignatureValidationAspect {
      * @author: zhouxiaowen
      * @date: 2021-05-20 15:50
      */
-    @Before("pointcut()")
-    public void handle() throws IOException {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+    @Around("pointcut()")
+    public Object handle(ProceedingJoinPoint point) throws Throwable {
         String sign = request.getHeader("sign");
-        //防止流读取一次后就没有了, 所以需要将流继续写出去
-        HttpServletRequest requestWrapper = new BodyReaderHttpServletRequestWrapper(request);
-        SortedMap<String, String> requesBody = getRequesBody(requestWrapper);
+        if (StringUtils.isEmpty(sign)){
+            throw new AuthException("签名参数为空！");
+        }
+        SortedMap<String, String> requesBody = getRequesBody(request);
         boolean verifySign = verifySign(requesBody, sign);
-        if(!verifySign){
+        if(verifySign){
+            return point.proceed();
+        }else {
             throw new AuthException("签名异常，请检查！");
         }
 
