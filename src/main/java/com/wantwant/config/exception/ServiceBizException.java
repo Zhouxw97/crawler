@@ -24,7 +24,7 @@
 */
 
 
-package com.wantwant.exception;
+package com.wantwant.config.exception;
 
 import java.util.ArrayList;
 import java.util.List;
