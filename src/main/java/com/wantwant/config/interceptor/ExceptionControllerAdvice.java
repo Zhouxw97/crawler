@@ -1,11 +1,11 @@
 /**
  *
  */
-package com.wantwant.interceptor;
+package com.wantwant.config.interceptor;
 
 import com.wantwant.config.ExceptionControllerAdviceHandel;
-import com.wantwant.exception.AuthException;
-import com.wantwant.exception.ServiceBizException;
+import com.wantwant.config.exception.AuthException;
+import com.wantwant.config.exception.ServiceBizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.http.ResponseEntity;
