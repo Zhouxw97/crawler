@@ -17,9 +17,9 @@ import java.nio.charset.Charset;
  */
 public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-    private final byte[] body;
+    private final byte[] body;//用于将流保存下来
 
-    public BodyReaderHttpServletRequestWrapper(HttpServletRequest request) {
+    public BodyReaderHttpServletRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
         String sessionStream = getBodyString(request);
         body = sessionStream.getBytes(Charset.forName("UTF-8"));
@@ -68,7 +68,6 @@ public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapp
 
     @Override
     public BufferedReader getReader() {
-
         return new BufferedReader(new InputStreamReader(getInputStream()));
     }
 
@@ -80,19 +79,16 @@ public class BodyReaderHttpServletRequestWrapper extends HttpServletRequestWrapp
 
             @Override
             public int read() {
-
                 return bais.read();
             }
 
             @Override
             public boolean isFinished() {
-
                 return false;
             }
 
             @Override
             public boolean isReady() {
-
                 return false;
             }
 
