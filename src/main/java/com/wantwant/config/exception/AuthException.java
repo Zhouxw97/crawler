@@ -1,4 +1,4 @@
-package com.wantwant.exception;
+package com.wantwant.config.exception;
 
 
 
