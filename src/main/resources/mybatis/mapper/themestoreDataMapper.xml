@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wantwant.dao.ThemestoreDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wantwant.entity.po.ThemestoreDataPo">
+    <id column="ID" property="id"/>
+        <result column="TODAY_TRANS_AMOUNT" property="todayTransAmount"/>
+        <result column="MONTH_TRANS_AMOUNT" property="monthTransAmount"/>
+        <result column="MONTH_GROUP_AMOUNT" property="monthGroupAmount"/>
+        <result column="MONTH_TARGET_AMOUNT" property="monthTargetAmount"/>
+        <result column="MONTH_TARGET_RATE" property="monthTargetRate"/>
+        <result column="STATISTICS_TIME" property="statisticsTime"/>
+</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       ID, TODAY_TRANS_AMOUNT, MONTH_TRANS_AMOUNT, MONTH_GROUP_AMOUNT, MONTH_TARGET_AMOUNT, MONTH_TARGET_RATE, STATISTICS_TIME
+    </sql>
+
+</mapper>
